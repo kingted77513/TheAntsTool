@@ -1,3 +1,6 @@
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.Scanner;
 
 public class LeafCounter {
@@ -41,7 +44,10 @@ public class LeafCounter {
 
         double chargeLeafHours = counter.countChargeLeafHours(nowHyphaeStorageCapacityMeta,
             nowHyphaeProductionPerHour) / 6;
-        System.out.printf("添加 " + "%.2f" + " 小時的葉子即可%n", chargeLeafHours);
+        int hours = Integer.parseInt(Double.toString(chargeLeafHours).split("\\.")[0]);
+        int minute = (int)((chargeLeafHours - hours) * 60);
+
+        System.out.printf("添加 %02d:%02d 小時的葉子即可%n", hours, minute);
     }
 
 
