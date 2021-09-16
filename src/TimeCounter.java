@@ -2,6 +2,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -10,15 +11,24 @@ public class TimeCounter {
         Scanner scanner = new Scanner(System.in);
         TimeCounter timeCounter = new TimeCounter();
 
+        List<Long> lastTimes = null;
+
         while(true){
             System.out.print("輸入等待時間 (dd hh mm 或 hh mm): ");
             List<Long> times = Arrays.stream(scanner.nextLine()
-                .split("\\s+")).map(Long::valueOf).collect(Collectors.toList());
+                .split("\\s+")).filter(array -> !array.isEmpty())
+                .map(Long::valueOf).collect(Collectors.toList());
+
+            if (times.isEmpty() && !Objects.isNull(lastTimes)){
+                times = lastTimes;
+            }
 
             if (times.size() < 2 || times.size() > 3) break;
 
             LocalDateTime finishTime = timeCounter.getFinishTime(times);
             System.out.println("finish time: " + finishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
+
+            lastTimes = times;
         }
     }
 
