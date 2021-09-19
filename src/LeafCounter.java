@@ -1,25 +1,26 @@
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.Scanner;
 
 public class LeafCounter {
-    private double maxLeafStorageCapacity;
+    private final double maxLeafStorageCapacity;
 
     private LeafCounter(double maxLeafStorageCapacityMeta){
-        this.maxLeafStorageCapacity = maxLeafStorageCapacityMeta * Math.pow(10, 6);
+        this.maxLeafStorageCapacity = maxLeafStorageCapacityMeta;
+    }
+
+    private double convertByMeta(double meta){
+        return meta * Math.pow(10, 6);
     }
 
     private double countChargeLeafHours(double nowHyphaeStorageCapacityMeta,
                                         double nowHyphaeProductionPerHour){
-        return (this.maxLeafStorageCapacity - nowHyphaeStorageCapacityMeta)
+        return convertByMeta(this.maxLeafStorageCapacity - nowHyphaeStorageCapacityMeta)
             / nowHyphaeProductionPerHour;
     }
 
     private enum LeafCuttingAnts{
         L18(39000);
 
-        private int hyphaeProductionPerHour;
+        private final int hyphaeProductionPerHour;
 
         LeafCuttingAnts(int hyphaeProductionPerHour){
             this.hyphaeProductionPerHour = hyphaeProductionPerHour;
