@@ -7,11 +7,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class TimeCounter {
-    final int reduceSeconds;
-
-    private TimeCounter(int reduceSeconds) {
-        this.reduceSeconds = reduceSeconds;
-    }
 
     private LocalDateTime getFinishTime(List<Long> times) throws Exception {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -37,7 +32,6 @@ public class TimeCounter {
 
         LocalDateTime finishTime = now.plusHours(hours);
         finishTime = finishTime.plusMinutes(minutes);
-        finishTime = finishTime.plusSeconds(this.reduceSeconds);
         return finishTime;
     }
 
@@ -59,8 +53,8 @@ public class TimeCounter {
 
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        final int reduceTime = AllianceAntHabitat.L16.getMaxHelpSeconds();
-        TimeCounter timeCounter = new TimeCounter(reduceTime);
+        final int helpSeconds = AllianceAntHabitat.L16.getMaxHelpSeconds();
+        TimeCounter timeCounter = new TimeCounter();
 
         List<Long> lastTimes = null;
 
@@ -78,6 +72,7 @@ public class TimeCounter {
 
             LocalDateTime finishTime = timeCounter.getFinishTime(times);
             System.out.println("finish time: " + finishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
+            System.out.println("finish time with help: " + finishTime.minusSeconds(helpSeconds).format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
 
             lastTimes = times;
         }
