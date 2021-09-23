@@ -17,39 +17,23 @@ public class LeafCounter {
             / nowHyphaeProductionPerHour;
     }
 
-    private enum LeafCuttingAnts{
-        L18(39000);
-
-        private final int hyphaeProductionPerHour;
-
-        LeafCuttingAnts(int hyphaeProductionPerHour){
-            this.hyphaeProductionPerHour = hyphaeProductionPerHour;
-        }
-
-        private int getHyphaeProductionPerHour(){
-            return this.hyphaeProductionPerHour;
-        }
-
-    }
-
     public static void main(String[] args) {
-        double maxLeafStorageCapacityMeta = 4.5;
-        double nowHyphaeProductionPerHour =
-            LeafCuttingAnts.L18.getHyphaeProductionPerHour() * 6;
+        double maxLeafStorageCapacityMeta = 5.5;
+        double nowHyphaeProductionPerHour = 439000 - 77900;
 
         LeafCounter counter = new LeafCounter(maxLeafStorageCapacityMeta);
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("輸入目前存量: ");
-        double nowHyphaeStorageCapacityMeta = scanner.nextDouble();
+        while(true){
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("輸入目前存量(M): ");
+            double nowHyphaeStorageCapacityMeta = scanner.nextDouble();
 
-        double chargeLeafHours = counter.countChargeLeafHours(nowHyphaeStorageCapacityMeta,
-            nowHyphaeProductionPerHour) / 6;
-        int hours = Integer.parseInt(Double.toString(chargeLeafHours).split("\\.")[0]);
-        int minute = (int)((chargeLeafHours - hours) * 60);
+            double chargeLeafHours = counter.countChargeLeafHours(nowHyphaeStorageCapacityMeta,
+                nowHyphaeProductionPerHour) / 6;
+            int hours = Integer.parseInt(Double.toString(chargeLeafHours).split("\\.")[0]);
+            int minute = (int)((chargeLeafHours - hours) * 60);
 
-        System.out.printf("添加 %02d:%02d 小時的葉子即可%n", hours, minute);
+            System.out.printf("添加 %02d:%02d 小時的葉子即可%n", hours, minute);
+        }
     }
-
-
 }
