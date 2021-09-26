@@ -35,46 +35,52 @@ public class TimeCounter {
         return finishTime;
     }
 
-    private enum AllianceAntHabitat{
-        L16(75, 18);
+    private enum 聯盟蟻棲息地 {
+        L17(78, 19);
 
-        private int helpTimes;
-        private int helpSeconds;
+        private int 幫助次數;
+        private int 幫助減少時間;
 
-        AllianceAntHabitat(int helpSeconds, int helpTimes){
-            this.helpSeconds = helpSeconds;
-            this.helpTimes = helpTimes;
+        聯盟蟻棲息地(int 幫助減少時間, int 幫助次數){
+            this.幫助減少時間 = 幫助減少時間;
+            this.幫助次數 = 幫助次數;
         }
 
         int getMaxHelpSeconds(){
-            return this.helpSeconds * this.helpTimes;
+            return this.幫助減少時間 * this.幫助次數;
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        final int helpSeconds = AllianceAntHabitat.L16.getMaxHelpSeconds();
+        final int helpSeconds = 聯盟蟻棲息地.L17.getMaxHelpSeconds();
         TimeCounter timeCounter = new TimeCounter();
 
         List<Long> lastTimes = null;
 
         while(true){
-            System.out.print("輸入等待時間 (dd hh mm 或 hh mm): ");
-            List<Long> times = Arrays.stream(scanner.nextLine()
-                    .split("\\s+")).filter(array -> !array.isEmpty())
-                .map(Long::valueOf).collect(Collectors.toList());
+            try {
+                System.out.print("輸入等待時間 (dd hh mm 或 hh mm): ");
+                List<Long> times = Arrays.stream(scanner.nextLine()
+                        .split("\\s+")).filter(array -> !array.isEmpty())
+                    .map(Long::valueOf).collect(Collectors.toList());
 
-            if (times.isEmpty() && !Objects.isNull(lastTimes)){
-                times = lastTimes;
+                if (times.isEmpty() && !Objects.isNull(lastTimes)){
+                    times = lastTimes;
+                }
+
+                if (times.size() < 2 || times.size() > 3) break;
+
+                LocalDateTime finishTime = timeCounter.getFinishTime(times);
+                System.out.println("finish time: " + finishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
+                System.out.println("finish time with help: " + finishTime.minusSeconds(helpSeconds).format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
+
+                lastTimes = times;
+            }catch (Exception e){
+                System.out.println("錯誤訊息 = " + e.getMessage());
             }
 
-            if (times.size() < 2 || times.size() > 3) break;
-
-            LocalDateTime finishTime = timeCounter.getFinishTime(times);
-            System.out.println("finish time: " + finishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
-            System.out.println("finish time with help: " + finishTime.minusSeconds(helpSeconds).format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
-
-            lastTimes = times;
         }
+
     }
 }
