@@ -4,57 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class TimeCounter {
+public abstract class TimeCounter {
 
-    private LocalDateTime getFinishTime(List<Long> times) throws Exception {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        if (times.size() == 3){
-            return plusTimeIncludeDays(localDateTime, times);
-        }else if (times.size() == 2){
-            return plusTimeInADay(localDateTime, times);
-        }else {
-            throw new Exception("Time format error");
-        }
-    }
-
-    private LocalDateTime plusTimeIncludeDays(LocalDateTime now, List<Long> times){
-        Long days = times.get(0);
-        LocalDateTime finishTime = now.plusDays(days);
-        times.remove(days);
-        return plusTimeInADay(finishTime, times);
-    }
-
-    private LocalDateTime plusTimeInADay(LocalDateTime now, List<Long> times){
-        Long hours = times.get(0);
-        Long minutes = times.get(1);
-
-        LocalDateTime finishTime = now.plusHours(hours);
-        finishTime = finishTime.plusMinutes(minutes);
-        return finishTime;
-    }
-
-    private enum 聯盟蟻棲息地 {
-        L17(78, 19);
-
-        private int 幫助次數;
-        private int 幫助減少時間;
-
-        聯盟蟻棲息地(int 幫助減少時間, int 幫助次數){
-            this.幫助減少時間 = 幫助減少時間;
-            this.幫助次數 = 幫助次數;
-        }
-
-        int getMaxHelpSeconds(){
-            return this.幫助減少時間 * this.幫助次數;
-        }
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        final int helpSeconds = 聯盟蟻棲息地.L17.getMaxHelpSeconds();
-        TimeCounter timeCounter = new TimeCounter();
+    public void run() {
+        final Scanner scanner = new Scanner(System.in);
 
         List<Long> lastTimes = null;
 
@@ -69,18 +25,42 @@ public class TimeCounter {
                     times = lastTimes;
                 }
 
-                if (times.size() < 2 || times.size() > 3) break;
+                if (times.size() < 2 || times.size() > 3) {
+                    break;
+                }
 
-                LocalDateTime finishTime = timeCounter.getFinishTime(times);
-                System.out.println("finish time: " + finishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
-                System.out.println("finish time with help: " + finishTime.minusSeconds(helpSeconds).format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
+                final long seconds = getEvolutionSeconds(times);
+                final LocalDateTime simpleFinishTime = LocalDateTime.now().plusSeconds(seconds);
+                final LocalDateTime discountFinishTime = LocalDateTime.now().plusSeconds(getDiscountSeconds(seconds));
+
+                System.out.println("單純預計完成時間：" + simpleFinishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
+                System.out.println("加速預計完成時間：" + discountFinishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
 
                 lastTimes = times;
-            }catch (Exception e){
+            }catch (final Exception e){
                 System.out.println("錯誤訊息 = " + e.getMessage());
             }
-
         }
-
     }
+
+    private long getEvolutionSeconds(final List<Long> times){
+        final long days = (times.size() == 3) ? times.get(0) : 0;
+        final long hours = (times.size() == 3) ? times.get(1) : times.get(0);
+        final long minutes = (times.size() == 3) ? times.get(2) : times.get(1);
+        return TimeUnit.DAYS.toSeconds(days) + TimeUnit.HOURS.toSeconds(hours) + TimeUnit.MINUTES.toSeconds(minutes) ;
+    }
+
+    private long getDiscountSeconds(final long seconds){
+        return (long)(seconds * get進化菌叢DiscountProportion() * get聯盟進化DiscountProportion()) - get聯盟蟻棲息地DiscountSeconds();
+    }
+
+    private int get聯盟蟻棲息地DiscountSeconds(){
+        final int 幫助次數 = 19;
+        final int 幫助減少時間 = 78;
+        return 幫助次數 * 幫助減少時間;
+    }
+
+    protected abstract double get進化菌叢DiscountProportion();
+
+    protected abstract double get聯盟進化DiscountProportion();
 }
