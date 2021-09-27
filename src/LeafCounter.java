@@ -18,8 +18,8 @@ public class LeafCounter {
     }
 
     public static void main(String[] args) {
-        double maxLeafStorageCapacityMeta = 5.5;
-        double nowHyphaeProductionPerHour = 439000 - 77900;
+        double maxLeafStorageCapacityMeta = 6.5;
+        double nowHyphaeProductionPerHour = 439000 - 78500;
 
         LeafCounter counter = new LeafCounter(maxLeafStorageCapacityMeta);
 
@@ -29,7 +29,7 @@ public class LeafCounter {
             double nowHyphaeStorageCapacityMeta = scanner.nextDouble();
 
             double chargeLeafHours = counter.countChargeLeafHours(nowHyphaeStorageCapacityMeta,
-                nowHyphaeProductionPerHour) / 6;
+                nowHyphaeProductionPerHour);
             int hours = Integer.parseInt(Double.toString(chargeLeafHours).split("\\.")[0]);
             int minute = (int)((chargeLeafHours - hours) * 60);
 
