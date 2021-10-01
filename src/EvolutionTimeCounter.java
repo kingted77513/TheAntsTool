@@ -6,7 +6,7 @@ public class EvolutionTimeCounter extends TimeCounter {
 
     @Override
     protected double get聯盟進化DiscountProportion() {
-        return 1.5 / 100.0;
+        return 2 / 100.0;
     }
 
     public static void main(final String[] args) {

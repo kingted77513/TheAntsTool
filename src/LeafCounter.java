@@ -3,35 +3,35 @@ import java.util.Scanner;
 public class LeafCounter {
     private final double maxLeafStorageCapacity;
 
-    private LeafCounter(double maxLeafStorageCapacityMeta){
+    private LeafCounter(final double maxLeafStorageCapacityMeta) {
         this.maxLeafStorageCapacity = maxLeafStorageCapacityMeta;
     }
 
-    private double convertByMeta(double meta){
+    private double convertByMeta(final double meta) {
         return meta * Math.pow(10, 6);
     }
 
-    private double countChargeLeafHours(double nowHyphaeStorageCapacityMeta,
-                                        double nowHyphaeProductionPerHour){
+    private double countChargeLeafHours(final double nowHyphaeStorageCapacityMeta,
+                                        final double nowHyphaeProductionPerHour) {
         return convertByMeta(this.maxLeafStorageCapacity - nowHyphaeStorageCapacityMeta)
             / nowHyphaeProductionPerHour;
     }
 
-    public static void main(String[] args) {
-        double maxLeafStorageCapacityMeta = 6.5;
-        double nowHyphaeProductionPerHour = 439000 - 78500;
+    public static void main(final String[] args) {
+        final double maxLeafStorageCapacityMeta = 7.5;
+        final double nowHyphaeProductionPerHour = 439000 - 78800;
 
-        LeafCounter counter = new LeafCounter(maxLeafStorageCapacityMeta);
+        final LeafCounter counter = new LeafCounter(maxLeafStorageCapacityMeta);
 
-        while(true){
-            Scanner scanner = new Scanner(System.in);
+        while (true) {
+            final Scanner scanner = new Scanner(System.in);
             System.out.print("輸入目前存量(M): ");
-            double nowHyphaeStorageCapacityMeta = scanner.nextDouble();
+            final double nowHyphaeStorageCapacityMeta = scanner.nextDouble();
 
-            double chargeLeafHours = counter.countChargeLeafHours(nowHyphaeStorageCapacityMeta,
+            final double chargeLeafHours = counter.countChargeLeafHours(nowHyphaeStorageCapacityMeta,
                 nowHyphaeProductionPerHour);
-            int hours = Integer.parseInt(Double.toString(chargeLeafHours).split("\\.")[0]);
-            int minute = (int)((chargeLeafHours - hours) * 60);
+            final int hours = Integer.parseInt(Double.toString(chargeLeafHours).split("\\.")[0]);
+            final int minute = (int) ((chargeLeafHours - hours) * 60);
 
             System.out.printf("添加 %02d:%02d 小時的葉子即可%n", hours, minute);
         }
