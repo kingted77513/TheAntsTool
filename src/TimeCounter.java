@@ -29,6 +29,7 @@ public abstract class TimeCounter {
                 }
 
                 if (times.size() < 2 || times.size() > 3) {
+                    System.out.println("參數錯誤，結束！");
                     break;
                 }
 
@@ -46,7 +47,7 @@ public abstract class TimeCounter {
                 final ZonedDateTime discountFinishTimeUtc = discountFinishTime.withZoneSameInstant(utcZoneId);
                 System.out.println("單純預計完成時間(UTC)：" + simpleFinishTimeUtc.format(formatter));
                 System.out.println("加速預計完成時間(UTC)：" + discountFinishTimeUtc.format(formatter));
-                System.out.println("活動配合時間：" + week.find(discountFinishTimeUtc).map(time -> time.format(formatter))
+                System.out.println("活動配合時間(UTC)：" + week.find(discountFinishTimeUtc).map(time -> time.format(formatter))
                     .orElse("無配合時間"));
 
                 lastTimes = times;
