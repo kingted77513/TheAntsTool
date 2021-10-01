@@ -1,8 +1,6 @@
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +14,8 @@ public abstract class TimeCounter {
         final Scanner scanner = new Scanner(System.in);
 
         List<Long> lastTimes = null;
+
+        final 蟻群活動Week week = get蟻群活動Week();
 
         while (true) {
             try {
@@ -36,16 +36,18 @@ public abstract class TimeCounter {
                 final ZonedDateTime simpleFinishTime = ZonedDateTime.now().plusSeconds(seconds);
                 final ZonedDateTime discountFinishTime = ZonedDateTime.now().plusSeconds(getDiscountSeconds(seconds));
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd(E) HH:mm");
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd(E) HH:mm");
 
                 System.out.println("單純預計完成時間：" + simpleFinishTime.format(formatter));
                 System.out.println("加速預計完成時間：" + discountFinishTime.format(formatter));
 
-                ZoneId utcZoneId = ZoneId.of("UTC");
+                final ZoneId utcZoneId = ZoneId.of("UTC");
                 final ZonedDateTime simpleFinishTimeUtc = simpleFinishTime.withZoneSameInstant(utcZoneId);
                 final ZonedDateTime discountFinishTimeUtc = discountFinishTime.withZoneSameInstant(utcZoneId);
                 System.out.println("單純預計完成時間(UTC)：" + simpleFinishTimeUtc.format(formatter));
                 System.out.println("加速預計完成時間(UTC)：" + discountFinishTimeUtc.format(formatter));
+                System.out.println("活動配合時間：" + week.find(discountFinishTimeUtc).map(time -> time.format(formatter))
+                    .orElse("無配合時間"));
 
                 lastTimes = times;
             } catch (final Exception e) {
@@ -74,4 +76,6 @@ public abstract class TimeCounter {
     protected abstract double get進化菌叢DiscountProportion();
 
     protected abstract double get聯盟進化DiscountProportion();
+
+    protected abstract 蟻群活動Week get蟻群活動Week();
 }
