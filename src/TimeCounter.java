@@ -1,5 +1,8 @@
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -30,11 +33,19 @@ public abstract class TimeCounter {
                 }
 
                 final long seconds = getEvolutionSeconds(times);
-                final LocalDateTime simpleFinishTime = LocalDateTime.now().plusSeconds(seconds);
-                final LocalDateTime discountFinishTime = LocalDateTime.now().plusSeconds(getDiscountSeconds(seconds));
+                final ZonedDateTime simpleFinishTime = ZonedDateTime.now().plusSeconds(seconds);
+                final ZonedDateTime discountFinishTime = ZonedDateTime.now().plusSeconds(getDiscountSeconds(seconds));
 
-                System.out.println("單純預計完成時間：" + simpleFinishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
-                System.out.println("加速預計完成時間：" + discountFinishTime.format(DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd(E) HH:mm");
+
+                System.out.println("單純預計完成時間：" + simpleFinishTime.format(formatter));
+                System.out.println("加速預計完成時間：" + discountFinishTime.format(formatter));
+
+                ZoneId utcZoneId = ZoneId.of("UTC");
+                final ZonedDateTime simpleFinishTimeUtc = simpleFinishTime.withZoneSameInstant(utcZoneId);
+                final ZonedDateTime discountFinishTimeUtc = discountFinishTime.withZoneSameInstant(utcZoneId);
+                System.out.println("單純預計完成時間(UTC)：" + simpleFinishTimeUtc.format(formatter));
+                System.out.println("加速預計完成時間(UTC)：" + discountFinishTimeUtc.format(formatter));
 
                 lastTimes = times;
             } catch (final Exception e) {
