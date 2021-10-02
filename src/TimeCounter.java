@@ -51,7 +51,6 @@ public abstract class TimeCounter {
                 檢視加速前活動配合時間(week, formatter, simpleFinishTime.withZoneSameInstant(utcZoneId));
                 檢視加速後活動配合時間(week, formatter, discountFinishTime.withZoneSameInstant(utcZoneId));
 
-
                 lastTimes = times;
             } catch (final Exception e) {
                 System.out.println("錯誤訊息 = " + e.getMessage());
