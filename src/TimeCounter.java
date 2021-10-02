@@ -1,9 +1,12 @@
+import java.time.Duration;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -19,6 +22,7 @@ public abstract class TimeCounter {
 
         while (true) {
             try {
+                System.out.println("-----------------------------------");
                 System.out.print("輸入等待時間 (dd hh mm 或 hh mm): ");
                 List<Long> times = Arrays.stream(scanner.nextLine()
                         .split("\\s+")).filter(array -> !array.isEmpty())
@@ -47,8 +51,39 @@ public abstract class TimeCounter {
                 final ZonedDateTime discountFinishTimeUtc = discountFinishTime.withZoneSameInstant(utcZoneId);
                 System.out.println("單純預計完成時間(UTC)：" + simpleFinishTimeUtc.format(formatter));
                 System.out.println("加速預計完成時間(UTC)：" + discountFinishTimeUtc.format(formatter));
-                System.out.println("活動配合時間(UTC)：" + week.find(discountFinishTimeUtc).map(time -> time.format(formatter))
-                    .orElse("無配合時間"));
+
+                final Optional<ZonedDateTime> matchTime = week.find(discountFinishTimeUtc);
+                if (matchTime.isPresent()) {
+                    System.out.println("中了！活動配合時間(UTC)：" + matchTime.get().format(formatter));
+                } else {
+
+                    {
+                        final Optional<ZonedDateTime> nearlyMatchTimeBeforeOptional = week.findNearlyBefore(discountFinishTimeUtc);
+                        if (nearlyMatchTimeBeforeOptional.isPresent()) {
+                            final ZonedDateTime nearlyMatchTime = nearlyMatchTimeBeforeOptional.get();
+
+                            System.out.println("沒中！最接近之前時間(UTC)：" + nearlyMatchTime.format(formatter));
+                            final LocalTime diffTime = LocalTime.MIN.plusSeconds(Duration.between(nearlyMatchTime, discountFinishTimeUtc).getSeconds());
+                            System.out.println("差距時間：" + diffTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+                        } else {
+                            System.out.println("這星期沒有之前的配合時間");
+                        }
+                    }
+
+                    {
+                        final Optional<ZonedDateTime> nearlyMatchTimeAfterOptional = week.findNearlyAfter(discountFinishTimeUtc);
+                        if (nearlyMatchTimeAfterOptional.isPresent()) {
+                            final ZonedDateTime nearlyMatchTime = nearlyMatchTimeAfterOptional.get();
+
+                            System.out.println("沒中！最接近之後時間(UTC)：" + nearlyMatchTime.format(formatter));
+                            final LocalTime diffTime = LocalTime.MIN.plusSeconds(Duration.between(discountFinishTimeUtc, nearlyMatchTime).getSeconds());
+                            System.out.println("差距時間：" + diffTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+                        } else {
+                            System.out.println("這星期沒有之後的配合時間");
+                        }
+                    }
+                }
+
 
                 lastTimes = times;
             } catch (final Exception e) {
