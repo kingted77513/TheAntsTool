@@ -1,5 +1,5 @@
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,8 +17,6 @@ public abstract class TimeCounter {
         final Scanner scanner = new Scanner(System.in);
 
         List<Long> lastTimes = null;
-
-        final 蟻群活動Week week = get蟻群活動Week();
 
         while (true) {
             try {
@@ -43,15 +41,15 @@ public abstract class TimeCounter {
 
                 final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd(E) HH:mm");
 
-                System.out.println("單純預計完成時間：" + simpleFinishTime.format(formatter));
-                System.out.println("加速預計完成時間：" + discountFinishTime.format(formatter));
+                System.out.println("1. 台灣時間");
+                System.out.println("1-1. 單純預計完成時間：" + simpleFinishTime.format(formatter));
+                System.out.println("1-2. 加速預計完成時間：" + discountFinishTime.format(formatter));
 
+                System.out.println("2. UTC時間");
+                final 蟻群活動Week week = get蟻群活動Week();
                 final ZoneId utcZoneId = ZoneId.of("UTC");
-                final ZonedDateTime simpleFinishTimeUtc = simpleFinishTime.withZoneSameInstant(utcZoneId);
-                final ZonedDateTime discountFinishTimeUtc = discountFinishTime.withZoneSameInstant(utcZoneId);
-
-                檢視加速前活動配合時間(week, formatter, simpleFinishTimeUtc);
-                檢視加速後活動配合時間(week, formatter, discountFinishTimeUtc);
+                檢視加速前活動配合時間(week, formatter, simpleFinishTime.withZoneSameInstant(utcZoneId));
+                檢視加速後活動配合時間(week, formatter, discountFinishTime.withZoneSameInstant(utcZoneId));
 
 
                 lastTimes = times;
@@ -62,7 +60,7 @@ public abstract class TimeCounter {
     }
 
     private void 檢視加速前活動配合時間(final 蟻群活動Week week, final DateTimeFormatter formatter, final ZonedDateTime simpleFinishTimeUtc) {
-        System.out.println("單純預計完成時間(UTC)：" + simpleFinishTimeUtc.format(formatter));
+        System.out.println("2-1. 單純預計完成時間(UTC)：" + simpleFinishTimeUtc.format(formatter));
         final Optional<ZonedDateTime> matchTime = week.find(simpleFinishTimeUtc);
         if (matchTime.isPresent()) {
             System.out.println("中了！活動配合時間(UTC)：" + matchTime.get().format(formatter));
@@ -73,7 +71,7 @@ public abstract class TimeCounter {
     }
 
     private void 檢視加速後活動配合時間(final 蟻群活動Week week, final DateTimeFormatter formatter, final ZonedDateTime discountFinishTimeUtc) {
-        System.out.println("加速預計完成時間(UTC)：" + discountFinishTimeUtc.format(formatter));
+        System.out.println("2-2. 加速預計完成時間(UTC)：" + discountFinishTimeUtc.format(formatter));
 
         final Optional<ZonedDateTime> matchTime = week.find(discountFinishTimeUtc);
         if (matchTime.isPresent()) {
@@ -90,11 +88,15 @@ public abstract class TimeCounter {
             final ZonedDateTime nearlyMatchTime = nearlyMatchTimeAfterOptional.get();
 
             System.out.println("沒中！最接近之後時間(UTC)：" + nearlyMatchTime.format(formatter));
-            final LocalTime diffTime = LocalTime.MIN.plusSeconds(Duration.between(discountFinishTimeUtc, nearlyMatchTime).getSeconds());
-            System.out.println("差距時間：" + diffTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+            printDiffTime(LocalDateTime.MIN.plusSeconds(Duration.between(discountFinishTimeUtc, nearlyMatchTime).getSeconds()));
         } else {
             System.out.println("這星期沒有之後的配合時間");
         }
+    }
+
+    private void printDiffTime(final LocalDateTime diffTime) {
+        final String day = (diffTime.getDayOfYear() > 1) ? Integer.toString(diffTime.getDayOfYear() - 1) : "";
+        System.out.printf("差距時間：%s %s%n", day, diffTime.format(DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     private void 檢視最近之前時間(final 蟻群活動Week week, final DateTimeFormatter formatter, final ZonedDateTime discountFinishTimeUtc) {
@@ -103,8 +105,7 @@ public abstract class TimeCounter {
             final ZonedDateTime nearlyMatchTime = nearlyMatchTimeBeforeOptional.get();
 
             System.out.println("沒中！最接近之前時間(UTC)：" + nearlyMatchTime.format(formatter));
-            final LocalTime diffTime = LocalTime.MIN.plusSeconds(Duration.between(nearlyMatchTime, discountFinishTimeUtc).getSeconds());
-            System.out.println("差距時間：" + diffTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+            printDiffTime(LocalDateTime.MIN.plusSeconds(Duration.between(nearlyMatchTime, discountFinishTimeUtc).getSeconds()));
         } else {
             System.out.println("這星期沒有之前的配合時間");
         }
