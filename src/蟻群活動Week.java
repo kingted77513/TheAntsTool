@@ -31,7 +31,8 @@ public class 蟻群活動Week {
 
     public Optional<ZonedDateTime> find(final ZonedDateTime finishTime) {
         return this.days.stream().flatMap(day -> day.getActivityHours().stream())
-            .filter(time -> finishTime.isAfter(time) && finishTime.isBefore(time.plusMinutes(50)))
+            .filter(time -> finishTime.isAfter(time) &&
+                finishTime.isBefore(time.plusMinutes(蟻群活動Day.get活動結束時間分鐘數())))
             .findFirst();
     }
 

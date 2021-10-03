@@ -95,7 +95,7 @@ public abstract class TimeCounter {
 
     private void printDiffTime(final LocalDateTime diffTime) {
         final String day = (diffTime.getDayOfYear() > 1) ? Integer.toString(diffTime.getDayOfYear() - 1) : "";
-        System.out.printf("差距時間：%s %s%n", day, diffTime.format(DateTimeFormatter.ofPattern("HH:mm")));
+        System.out.printf("差距時間：%sD %s%n", day, diffTime.format(DateTimeFormatter.ofPattern("HH:mm")));
     }
 
     private void 檢視最近之前時間(final 蟻群活動Week week, final DateTimeFormatter formatter, final ZonedDateTime discountFinishTimeUtc) {
