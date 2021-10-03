@@ -44,6 +44,8 @@ public class 蟻群活動Week {
 
     public Optional<ZonedDateTime> findNearlyBefore(final ZonedDateTime finishTime) {
         return this.days.stream().flatMap(day -> day.getActivityHours().stream())
-            .filter(finishTime::isAfter).max(Comparator.naturalOrder());
+            .filter(finishTime::isAfter)
+            .map(time -> time.plusMinutes(蟻群活動Day.get活動結束時間分鐘數()))
+            .max(Comparator.naturalOrder());
     }
 }
