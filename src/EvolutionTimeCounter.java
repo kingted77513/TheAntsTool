@@ -25,7 +25,7 @@ public class EvolutionTimeCounter extends TimeCounter {
     }
 
     public static void main(final String[] args) {
-        System.out.println("進化升級時間計算");
+        System.out.println("進化升級時間計算 (增加戰鬥力超過500)");
         new EvolutionTimeCounter().run();
     }
 }

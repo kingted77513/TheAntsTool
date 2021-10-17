@@ -25,7 +25,7 @@ public class BuildingTimeCounter extends TimeCounter {
     }
 
     public static void main(final String[] args) {
-        System.out.println("建築升級時間計算");
+        System.out.println("建築升級時間計算 (增加戰鬥力超過300)");
         new BuildingTimeCounter().run();
     }
 }
