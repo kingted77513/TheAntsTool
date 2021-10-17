@@ -122,9 +122,9 @@ public abstract class TimeCounter {
     }
 
     private int get聯盟蟻棲息地DiscountSeconds() {
-        final int 幫助次數 = 19;
-        final int 幫助減少時間 = 78;
-        return 幫助次數 * 幫助減少時間;
+        final int 幫助減少時間 = 81;
+        final int 幫助次數 = 20;
+        return 幫助減少時間 * 幫助次數;
     }
 
     protected abstract double get進化菌叢DiscountProportion();
