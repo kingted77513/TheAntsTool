@@ -8,7 +8,7 @@ public class EvolutionTimeCounter extends TimeCounter {
 
     @Override
     protected double get聯盟進化DiscountProportion() {
-        return 3 / 100.0;
+        return 3.5 / 100.0;
     }
 
     @Override
