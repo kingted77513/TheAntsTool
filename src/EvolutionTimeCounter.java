@@ -19,7 +19,7 @@ public class EvolutionTimeCounter extends TimeCounter {
         week.insert(DayOfWeek.WEDNESDAY, 1, 3, 6);
         week.insert(DayOfWeek.THURSDAY, 6);
         week.insert(DayOfWeek.FRIDAY, 2, 4, 6);
-        week.insert(DayOfWeek.SATURDAY, 1, 5, 7);
+        week.insert(DayOfWeek.SATURDAY, 1, 4, 5, 7);
         week.insert(DayOfWeek.SUNDAY, 3, 6);
         return week;
     }

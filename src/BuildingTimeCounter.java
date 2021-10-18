@@ -19,7 +19,7 @@ public class BuildingTimeCounter extends TimeCounter {
         week.insert(DayOfWeek.WEDNESDAY, 0, 3, 4, 6);
         week.insert(DayOfWeek.THURSDAY, 0, 6);
         week.insert(DayOfWeek.FRIDAY, 2, 4, 5);
-        week.insert(DayOfWeek.SATURDAY, 2, 5, 6);
+        week.insert(DayOfWeek.SATURDAY, 2, 4, 5, 6);
         week.insert(DayOfWeek.SUNDAY, 0, 6);
         return week;
     }
