@@ -2,16 +2,6 @@ import java.time.DayOfWeek;
 
 public class BuildingTimeCounter extends TimeCounter {
     @Override
-    protected double get進化菌叢DiscountProportion() {
-        return 10 / 100.0;
-    }
-
-    @Override
-    protected double get聯盟進化DiscountProportion() {
-        return 5 / 100.0;
-    }
-
-    @Override
     protected 蟻群活動Week get蟻群活動Week() {
         final 蟻群活動Week week = new 蟻群活動Week();
         week.insert(DayOfWeek.MONDAY, 0, 2, 4, 5, 6, 7);

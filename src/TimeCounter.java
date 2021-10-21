@@ -118,18 +118,19 @@ public abstract class TimeCounter {
     }
 
     private long getDiscountSeconds(final long seconds) {
-        return (long) (seconds - (get聯盟蟻棲息地DiscountSeconds() * (1 + get進化菌叢DiscountProportion() + get聯盟進化DiscountProportion())));
+        return seconds - getDiscountSeconds();
     }
 
-    private int get聯盟蟻棲息地DiscountSeconds() {
-        final int 幫助減少時間 = 81;
-        final int 幫助次數 = 20;
-        return 幫助減少時間 * 幫助次數;
+    private int getDiscountSeconds() {
+        final int 聯盟蟻棲息地幫助減少秒數 = 84;
+        final int 聯盟協助I減少秒數 = 20;
+        final int 聯盟協助II減少秒數 = 0;
+        final int 聯盟協助III減少秒數 = 0;
+
+        final int 幫助次數 = 21;
+
+        return (聯盟蟻棲息地幫助減少秒數 + 聯盟協助I減少秒數 + 聯盟協助II減少秒數 + 聯盟協助III減少秒數) * 幫助次數;
     }
-
-    protected abstract double get進化菌叢DiscountProportion();
-
-    protected abstract double get聯盟進化DiscountProportion();
 
     protected abstract 蟻群活動Week get蟻群活動Week();
 }
