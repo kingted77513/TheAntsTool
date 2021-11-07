@@ -3,11 +3,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -23,8 +19,8 @@ public abstract class TimeCounter {
                 System.out.println("-----------------------------------");
                 System.out.print("輸入等待時間 (dd hh mm 或 hh mm): ");
                 List<Long> times = Arrays.stream(scanner.nextLine()
-                        .split("\\s+")).filter(array -> !array.isEmpty())
-                    .map(Long::valueOf).collect(Collectors.toList());
+                                .split("\\s+")).filter(array -> !array.isEmpty())
+                        .map(Long::valueOf).collect(Collectors.toList());
 
                 if (times.isEmpty() && !Objects.isNull(lastTimes)) {
                     times = lastTimes;
@@ -122,12 +118,12 @@ public abstract class TimeCounter {
     }
 
     private int getDiscountSeconds() {
-        final int 聯盟蟻棲息地幫助減少秒數 = 90;
+        final int 聯盟蟻棲息地幫助減少秒數 = 93;
         final int 聯盟協助I減少秒數 = 20;
         final int 聯盟協助II減少秒數 = 0;
         final int 聯盟協助III減少秒數 = 0;
 
-        final int 幫助次數 = 23;
+        final int 幫助次數 = 24;
 
         return (聯盟蟻棲息地幫助減少秒數 + 聯盟協助I減少秒數 + 聯盟協助II減少秒數 + 聯盟協助III減少秒數) * 幫助次數;
     }
