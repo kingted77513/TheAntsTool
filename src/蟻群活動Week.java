@@ -50,4 +50,20 @@ public class 蟻群活動Week {
             .map(time -> time.plusMinutes(蟻群活動Day.get活動結束時間分鐘數()))
             .max(Comparator.naturalOrder());
     }
+
+    public ZonedDateTime findNearlyAfterNotThisWeek(final ZonedDateTime finishTime) {
+        final long bufferMinutes = 5;
+        while (true) {
+            final Optional<ZonedDateTime> matchTime = this.days.stream().flatMap(day -> day.getActivityHours().stream())
+                .map(time -> time.plusWeeks(1))
+                .filter(finishTime::isBefore)
+                .map(time -> time.plusMinutes(bufferMinutes))
+                .findFirst();
+
+            if (matchTime.isPresent()) {
+                return matchTime.get();
+            }
+        }
+    }
+
 }
