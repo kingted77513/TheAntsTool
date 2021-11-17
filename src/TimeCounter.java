@@ -90,10 +90,15 @@ public abstract class TimeCounter {
             printDiffTime(LocalDateTime.MIN.plusSeconds(Duration.between(discountFinishTimeUtc, nearlyMatchTime).getSeconds()));
         } else {
             System.out.println("這星期沒有之後的配合時間");
-            final ZonedDateTime nearlyAfterOutThisWeek = week.findNearlyAfterNotThisWeek(discountFinishTimeUtc);
-            System.out.println("找到本週之後，活動配合時間(UTC)：" + nearlyAfterOutThisWeek.format(formatter));
-            printDiffTime(LocalDateTime.MIN.plusSeconds(Duration.between(discountFinishTimeUtc, nearlyAfterOutThisWeek).getSeconds()));
 
+            final Optional<ZonedDateTime> matchTime = week.findNextWeek(discountFinishTimeUtc);
+            if (matchTime.isPresent()) {
+                System.out.println("中了！下週活動配合時間(UTC)：" + matchTime.get().format(formatter));
+            } else {
+                final ZonedDateTime nearlyAfterOutThisWeek = week.findNearlyAfterNotThisWeek(discountFinishTimeUtc);
+                System.out.println("沒中！最接近之後時間(UTC)：" + nearlyAfterOutThisWeek.format(formatter));
+                printDiffTime(LocalDateTime.MIN.plusSeconds(Duration.between(discountFinishTimeUtc, nearlyAfterOutThisWeek).getSeconds()));
+            }
         }
     }
 
