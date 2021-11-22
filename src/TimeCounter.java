@@ -136,12 +136,12 @@ public abstract class TimeCounter {
     }
 
     private int getDiscountSeconds() {
-        final int 聯盟蟻棲息地幫助減少秒數 = 93;
+        final int 聯盟蟻棲息地幫助減少秒數 = 96;
         final int 聯盟協助I減少秒數 = 20;
         final int 聯盟協助II減少秒數 = 0;
         final int 聯盟協助III減少秒數 = 0;
 
-        final int 幫助次數 = 24;
+        final int 幫助次數 = 25;
 
         return (聯盟蟻棲息地幫助減少秒數 + 聯盟協助I減少秒數 + 聯盟協助II減少秒數 + 聯盟協助III減少秒數) * 幫助次數;
     }
